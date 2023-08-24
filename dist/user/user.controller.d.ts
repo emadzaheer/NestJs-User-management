@@ -1,5 +1,6 @@
 import { UserService } from './user.service';
-import { Request } from 'express';
+import { Param } from "@nestjs/common";
+import { UpdateUserDto } from './dto/user-update.dto';
 export declare class UserController {
     private userService;
     constructor(userService: UserService);
@@ -7,9 +8,22 @@ export declare class UserController {
         name: string;
         age: number;
     };
+    update(updateUserDto: UpdateUserDto, param: {
+        userId: number;
+    }): {
+        body: UpdateUserDto;
+        param: {
+            userId: number;
+        };
+    };
     getUserEmail(): string;
-    getUserId(userId: number): number;
-    update(req: Request): any;
-    deleteUser(userId: number): number;
-    store(req: Request): any;
+    getUser(param: {
+        userId: number;
+    }): {
+        userId: number;
+    };
+    deleteUser(param: {
+        userId: number;
+    }): typeof Param;
+    storeUser(body: any): any;
 }

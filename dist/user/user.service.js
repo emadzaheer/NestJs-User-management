@@ -8,9 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
+const common_2 = require("@nestjs/common");
 let UserService = exports.UserService = class UserService {
     get() {
         return { name: "EZ", age: 24 };
+    }
+    create(body) {
+        return body;
+    }
+    update(updateUserDto, param) {
+        return { body: updateUserDto, param };
+    }
+    show(param) {
+        return param;
+    }
+    delete(param) {
+        return common_2.Param;
     }
 };
 exports.UserService = UserService = __decorate([
