@@ -17,9 +17,7 @@ export declare class UserController {
         };
     };
     getUserEmail(): string;
-    getUser(param: {
-        userId: number;
-    }): {
+    getUser(userId: number): {
         userId: number;
     };
     deleteUser(param: {

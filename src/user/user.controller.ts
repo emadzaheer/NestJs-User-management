@@ -1,6 +1,6 @@
 import { UserService } from './user.service';
 
-import { Controller, Get, Post, Req, Param, Delete, Patch, Body, Put } from "@nestjs/common";
+import { Controller, Get, Post, Req, Param, Delete, Patch, Body, Put, ParseIntPipe } from "@nestjs/common";
 
 import { Request } from 'express';
 import { UpdateUserDto } from './dto/user-update.dto';
@@ -35,8 +35,8 @@ export class UserController {
     }
 
     @Get('/:userId')               // anything after a : is a variable and you can 
-    getUser(@Param() param: {userId: number} ){
-        return this.userService.show(param);  
+    getUser(@Param('userId', ParseIntPipe)  userId: number){
+        return this.userService.show(userId);  
     }
 
     @Delete('/:userId')               // anything after a : is a variable and you can 
