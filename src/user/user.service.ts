@@ -24,8 +24,8 @@ export class UserService {
         return {body: updateUserDto, param};
     }
 
-    show (param: {userId: number}){
-        return param;
+    show (userId: number){
+        return {userId};
     }
 
     delete (param: {userId: Number}){

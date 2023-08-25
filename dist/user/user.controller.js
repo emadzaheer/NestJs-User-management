@@ -30,8 +30,8 @@ let UserController = exports.UserController = class UserController {
     getUserEmail() {
         return "ez@ez.com";
     }
-    getUser(param) {
-        return this.userService.show(param);
+    getUser(userId) {
+        return this.userService.show(userId);
     }
     deleteUser(param) {
         return this.userService.delete(param);
@@ -62,9 +62,9 @@ __decorate([
 ], UserController.prototype, "getUserEmail", null);
 __decorate([
     (0, common_1.Get)('/:userId'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getUser", null);
 __decorate([

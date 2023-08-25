@@ -19,8 +19,8 @@ let UserService = exports.UserService = class UserService {
     update(updateUserDto, param) {
         return { body: updateUserDto, param };
     }
-    show(param) {
-        return param;
+    show(userId) {
+        return { userId };
     }
     delete(param) {
         return common_2.Param;

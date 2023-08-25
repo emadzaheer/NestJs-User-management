@@ -14,9 +14,7 @@ export declare class UserService {
             userId: number;
         };
     };
-    show(param: {
-        userId: number;
-    }): {
+    show(userId: number): {
         userId: number;
     };
     delete(param: {
