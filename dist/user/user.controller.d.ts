@@ -4,10 +4,7 @@ import { UpdateUserDto } from './dto/user-update.dto';
 export declare class UserController {
     private userService;
     constructor(userService: UserService);
-    getUsers(): {
-        name: string;
-        age: number;
-    };
+    getUsers(): Promise<import("./entity/user.entity").User[]>;
     update(updateUserDto: UpdateUserDto, param: {
         userId: number;
     }): {
