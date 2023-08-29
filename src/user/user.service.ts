@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
-
 import { Controller, Get, Post, Req, Param, Delete, Patch } from "@nestjs/common";
-
 import { Request } from 'express';
 import { UpdateUserDto } from './dto/user-update.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
-
-    get() {
-        return {name: "EZ", age: 24};
+    constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+      ) {}    // a database query
+ 
+    get():Promise<User[]> {
+        // return {name: "EZ", age: 24};
+        return this.userRepository.find();
     }
 
     create(body: any){

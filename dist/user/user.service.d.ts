@@ -1,10 +1,11 @@
 import { Param } from "@nestjs/common";
 import { UpdateUserDto } from './dto/user-update.dto';
+import { Repository } from 'typeorm';
+import { User } from './entity/user.entity';
 export declare class UserService {
-    get(): {
-        name: string;
-        age: number;
-    };
+    private userRepository;
+    constructor(userRepository: Repository<User>);
+    get(): Promise<User[]>;
     create(body: any): any;
     update(updateUserDto: UpdateUserDto, param: {
         userId: number;

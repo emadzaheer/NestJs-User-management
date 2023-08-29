@@ -61,7 +61,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getUserEmail", null);
 __decorate([
-    (0, common_1.Get)('/:userId'),
+    (0, common_1.Get)('/:Id'),
     __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

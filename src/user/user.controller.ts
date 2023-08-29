@@ -26,7 +26,7 @@ export class UserController {
     update(@Body() updateUserDto: UpdateUserDto, 
     @Param() param : { userId : number},  
     ){
-        return this.userService.update(updateUserDto, param);
+        return this.userService.update(updateUserDto, param); 
     }
 
     @Get('/email')
@@ -34,7 +34,7 @@ export class UserController {
         return "ez@ez.com";
     }
 
-    @Get('/:userId')               // anything after a : is a variable and you can 
+    @Get('/:Id')               // anything after a : is a variable and you can 
     getUser(@Param('userId', ParseIntPipe)  userId: number){
         return this.userService.show(userId);  
     }

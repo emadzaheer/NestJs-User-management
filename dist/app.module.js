@@ -10,12 +10,26 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const user_module_1 = require("./user/user.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("./user/entity/user.entity");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         controllers: [app_controller_1.AppController],
-        imports: [user_module_1.UserModule]
+        imports: [
+            user_module_1.UserModule,
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'mysql',
+                host: '127.0.0.1',
+                port: 3306,
+                username: 'root',
+                password: 'root',
+                database: 'nestJs',
+                entities: [user_entity_1.User],
+                synchronize: true,
+            }),
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
