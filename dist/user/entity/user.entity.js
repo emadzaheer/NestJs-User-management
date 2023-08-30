@@ -20,11 +20,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "firstName", void 0);
+], User.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "lastName", void 0);
+], User.prototype, "email", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

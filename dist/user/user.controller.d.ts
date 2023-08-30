@@ -5,6 +5,7 @@ export declare class UserController {
     private userService;
     constructor(userService: UserService);
     getUsers(): Promise<import("./entity/user.entity").User[]>;
+    storeUser(updateUserDto: UpdateUserDto): Promise<UpdateUserDto & import("./entity/user.entity").User>;
     update(updateUserDto: UpdateUserDto, param: {
         userId: number;
     }): {
@@ -14,11 +15,8 @@ export declare class UserController {
         };
     };
     getUserEmail(): string;
-    getUser(userId: number): {
-        userId: number;
-    };
+    getUser(userId: number): Promise<import("./entity/user.entity").User>;
     deleteUser(param: {
         userId: number;
     }): typeof Param;
-    storeUser(body: any): any;
 }
