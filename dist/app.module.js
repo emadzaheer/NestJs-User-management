@@ -20,14 +20,15 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             user_module_1.UserModule,
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: '127.0.0.1',
-                port: 3306,
-                username: 'root',
-                password: 'root',
-                database: 'nestJs',
+                type: 'postgres',
+                host: 'localhost',
+                port: 5432,
+                password: '1234',
+                username: 'postgres',
                 entities: [user_entity_1.User],
+                database: 'nestjsusermanagement',
                 synchronize: true,
+                logging: true,
             }),
         ],
     })

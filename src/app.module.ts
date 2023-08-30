@@ -9,16 +9,16 @@ import { User } from './user/entity/user.entity';
   controllers: [AppController],
   imports: [
     UserModule,
-    TypeOrmModule.forRoot({        //defining the type orm for root module.   
-      type: 'mysql',
-      host: '127.0.0.1',
-      port: 3306,
-      username: 'root', 
-      password: 'root',
-      database: 'nestJs',
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      password: '1234',
+      username: 'postgres',
       entities: [User],
+      database: 'nestjsusermanagement',
       synchronize: true,
-                //shouldn't be used in prod. deletes db data. 
+      logging: true,
     }),
   ],
 })
