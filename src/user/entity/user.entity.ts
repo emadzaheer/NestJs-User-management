@@ -2,16 +2,17 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
-// constructor(parameters) {}
+
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number;    //this will auto increment
     
     @Column()
-    firstName: string;
+    name: string;
 
     @Column()
-    lastName: string;
+    email: string;
 
-    // @Column({default:true})
-    // isActive: boolean;
+    
+
+
 }

@@ -19,6 +19,7 @@ import { User } from './user/entity/user.entity';
       database: 'nestjsusermanagement',
       synchronize: true,
       logging: true,
+      autoLoadEntities: true,
     }),
   ],
 })

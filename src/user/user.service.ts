@@ -15,11 +15,11 @@ export class UserService {
  
     get():Promise<User[]> {
         // return {name: "EZ", age: 24};
-        return this.userRepository.find();
+        return this.userRepository.find();  //returns all the users 
     }
 
-    create(body: any){
-        return body;       //wehatever u write in postman body, ikt will return
+    create(updateUserDto: UpdateUserDto){
+        return this.userRepository.save(updateUserDto);       //wehatever u write in postman body, ikt will return
     }
 
     // update(req: Request, param: {userId:number}){
@@ -31,7 +31,7 @@ export class UserService {
     }
 
     show (userId: number){
-        return {userId};
+        return this.userRepository.findOne({where: {id: userId}});
     }
 
     delete (param: {userId: Number}){

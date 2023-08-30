@@ -11,9 +11,14 @@ export class UserController {
 
     constructor(private userService: UserService){};
 
-    @Get()                                  //base route 
+    @Get()                                   //base route 
     getUsers() {
         return this.userService.get();
+    }
+
+    @Post()                     //body is actually req.body
+    storeUser(@Body() updateUserDto: UpdateUserDto){
+        return this.userService.create(updateUserDto);          //whatever u write in postman body, ikt will return
     }
 
     // @Patch('/:userId') 
@@ -22,7 +27,6 @@ export class UserController {
     // }
     //using body instead of req:
     @Put('/:userId') 
-    
     update(@Body() updateUserDto: UpdateUserDto, 
     @Param() param : { userId : number},  
     ){
@@ -35,8 +39,10 @@ export class UserController {
     }
 
     @Get('/:Id')               // anything after a : is a variable and you can 
-    getUser(@Param('userId', ParseIntPipe)  userId: number){
-        return this.userService.show(userId);  
+    async getUser(@Param('userId', ParseIntPipe)  userId: number){
+        console.log(await this.userService.show(userId));
+        
+        return await this.userService.show(userId);  
     }
 
     @Delete('/:userId')               // anything after a : is a variable and you can 
@@ -44,8 +50,5 @@ export class UserController {
         return this.userService.delete(param);  
     }
 
-    @Post()                     //body is actually req.body
-    storeUser(@Body() body: any){
-        return this.userService.create(body);          //whatever u write in postman body, ikt will return
-    }
+   
 }

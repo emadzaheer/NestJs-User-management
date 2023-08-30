@@ -29,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
                 database: 'nestjsusermanagement',
                 synchronize: true,
                 logging: true,
+                autoLoadEntities: true,
             }),
         ],
     })

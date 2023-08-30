@@ -25,14 +25,14 @@ let UserService = exports.UserService = class UserService {
     get() {
         return this.userRepository.find();
     }
-    create(body) {
-        return body;
+    create(updateUserDto) {
+        return this.userRepository.save(updateUserDto);
     }
     update(updateUserDto, param) {
         return { body: updateUserDto, param };
     }
     show(userId) {
-        return { userId };
+        return this.userRepository.findOne({ where: { id: userId } });
     }
     delete(param) {
         return common_2.Param;

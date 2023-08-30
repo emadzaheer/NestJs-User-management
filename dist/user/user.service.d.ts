@@ -6,7 +6,7 @@ export declare class UserService {
     private userRepository;
     constructor(userRepository: Repository<User>);
     get(): Promise<User[]>;
-    create(body: any): any;
+    create(updateUserDto: UpdateUserDto): Promise<UpdateUserDto & User>;
     update(updateUserDto: UpdateUserDto, param: {
         userId: number;
     }): {
@@ -15,9 +15,7 @@ export declare class UserService {
             userId: number;
         };
     };
-    show(userId: number): {
-        userId: number;
-    };
+    show(userId: number): Promise<User>;
     delete(param: {
         userId: Number;
     }): typeof Param;
