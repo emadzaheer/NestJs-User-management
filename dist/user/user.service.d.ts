@@ -8,5 +8,6 @@ export declare class UserService {
     create(updateUserDto: UpdateUserDto): Promise<UpdateUserDto & User>;
     update(updateUserDto: UpdateUserDto, userId: number): Promise<import("typeorm").UpdateResult>;
     show(id: number): Promise<User | null>;
+    findByEmail(email: string): Promise<User>;
     remove(id: number): Promise<import("typeorm").DeleteResult>;
 }

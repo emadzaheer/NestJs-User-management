@@ -6,6 +6,8 @@ export class UpdateUserDto{
     name: string;
     @IsEmail() 
     email: string;
+    @IsString()
+    password: string;
     // @IsNumber()
     // age: Number;
 }
