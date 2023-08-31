@@ -13,6 +13,7 @@ export class UserController {
 
     @Get()                                   //base route 
     getUsers() {
+        console.log(this.userService.get());
         return this.userService.get();
     }
 
@@ -21,34 +22,39 @@ export class UserController {
         return this.userService.create(updateUserDto);          //whatever u write in postman body, ikt will return
     }
 
-    // @Patch('/:userId') 
-    // update(@Req() req: Request, @Param() param : {userId:number}  ){
-    //     return this.userService.update(req, param);
-    // }
-    //using body instead of req:
-    @Put('/:userId') 
-    update(@Body() updateUserDto: UpdateUserDto, 
-    @Param() param : { userId : number},  
-    ){
-        return this.userService.update(updateUserDto, param); 
+    @Patch('/:userId') 
+    async update(
+    @Body() updateUserDto: UpdateUserDto, 
+    @Param('userId') userId: number,  // Use 'userId' here to match the route parameter
+    ) {
+    return this.userService.update(updateUserDto, userId);
     }
+ 
 
     @Get('/email')
     getUserEmail() {
         return "ez@ez.com";
     }
 
-    @Get('/:Id')               // anything after a : is a variable and you can 
-    async getUser(@Param('userId', ParseIntPipe)  userId: number){
-        console.log(await this.userService.show(userId));
-        
-        return await this.userService.show(userId);  
+    @Get('/:id')
+    getUserById(@Param('id') id: number) {
+ 
+      return this.userService.show(id);
+    }
+    
+    @Delete('/:id')               // anything after a : is a variable and you can 
+    async remove(@Param('id') id: number) {
+        return this.userService.remove(id);  
     }
 
-    @Delete('/:userId')               // anything after a : is a variable and you can 
-    deleteUser(@Param() param: { userId: number} ){
-        return this.userService.delete(param);  
-    }
 
-   
+    
+
+
+    // @Patch('/:userId') 
+    // update(@Req() req: Request, @Param() param : {userId:number}  ){
+    //     return this.userService.update(req, param);
+    // }
+    //using body instead of req:
+
 }
