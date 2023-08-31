@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const common_2 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entity/user.entity");
@@ -25,17 +24,18 @@ let UserService = exports.UserService = class UserService {
     get() {
         return this.userRepository.find();
     }
-    create(updateUserDto) {
+    async create(updateUserDto) {
         return this.userRepository.save(updateUserDto);
     }
-    update(updateUserDto, param) {
-        return { body: updateUserDto, param };
+    async update(updateUserDto, userId) {
+        const criteria = { id: userId };
+        return this.userRepository.update(criteria, updateUserDto);
     }
-    show(userId) {
-        return this.userRepository.findOne({ where: { id: userId } });
+    show(id) {
+        return this.userRepository.findOneBy({ id });
     }
-    delete(param) {
-        return common_2.Param;
+    async remove(id) {
+        return await this.userRepository.delete({ id });
     }
 };
 exports.UserService = UserService = __decorate([

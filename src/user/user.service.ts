@@ -11,14 +11,14 @@ export class UserService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-      ) {}    // a database query
+    ) {}    // a database query
  
     get():Promise<User[]> {
         // return {name: "EZ", age: 24};
         return this.userRepository.find();  //returns all the users 
     }
 
-    create(updateUserDto: UpdateUserDto){
+    async create(updateUserDto: UpdateUserDto){
         return this.userRepository.save(updateUserDto);       //wehatever u write in postman body, ikt will return
     }
 
@@ -26,15 +26,19 @@ export class UserService {
     //     return {body: req.body, param};
     // }
     //changed to:
-    update(updateUserDto: UpdateUserDto, param: {userId:number}){
-        return {body: updateUserDto, param};
+    async update(updateUserDto: UpdateUserDto, userId: number) {
+        // Define the criteria to update a specific user based on userId
+        const criteria = { id: userId };
+      
+        // Update the user using the provided criteria and updateUserDto
+        return this.userRepository.update(criteria, updateUserDto);
     }
 
-    show (userId: number){
-        return this.userRepository.findOne({where: {id: userId}});
+    show (id: number): Promise<User | null> {
+        return this.userRepository.findOneBy({ id });
     }
 
-    delete (param: {userId: Number}){
-        return Param;
+    async remove (id: number){
+        return await this.userRepository.delete({id});
     }
 }

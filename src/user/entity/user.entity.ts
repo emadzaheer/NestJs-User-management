@@ -12,6 +12,9 @@ export class User {
     @Column()
     email: string;
 
+    // @Column({ nullable: true, default: 0 })
+    // age: number;
+
     
 
 
