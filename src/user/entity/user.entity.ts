@@ -12,10 +12,8 @@ export class User {
     @Column()
     email: string;
 
+    @Column({ type: 'varchar', default: 'default_password', nullable: false })
+    password: string;
     // @Column({ nullable: true, default: 0 })
     // age: number;
-
-    
-
-
 }
