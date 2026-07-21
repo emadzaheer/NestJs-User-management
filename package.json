@@ -4,7 +4,7 @@
   "description": "REST API for user management and authentication, built with NestJS and TypeORM.",
   "author": "emadzaheer",
   "private": true,
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
