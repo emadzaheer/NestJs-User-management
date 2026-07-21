@@ -1,73 +1,150 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# User Management API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A REST API for managing users and handling credential-based login, built with
+[NestJS](https://nestjs.com/), TypeScript, and PostgreSQL via TypeORM. It
+demonstrates a clean module boundary between user persistence and authentication,
+request validation with DTOs, and configuration driven entirely by environment
+variables.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- User CRUD over a PostgreSQL table (create, read, update, delete)
+- Credential login that validates against stored users and returns the user
+  record without exposing the password
+- Request validation with `class-validator` DTOs and a global whitelisting
+  `ValidationPipe`, so unknown fields are stripped from request bodies
+- Environment-driven database and server configuration (no secrets in source)
+- A liveness endpoint for health checks
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech stack
 
-## Installation
+| Concern    | Choice                              |
+| ---------- | ----------------------------------- |
+| Framework  | NestJS 10                           |
+| Language   | TypeScript                          |
+| ORM        | TypeORM 0.3                         |
+| Database   | PostgreSQL                          |
+| Validation | class-validator / class-transformer |
+| Testing    | Jest + Supertest                    |
 
-```bash
-$ npm install
+## Architecture
+
+The application is split into feature modules wired together by the root
+`AppModule`.
+
+```
+src/
+  app.module.ts        Root module: config + TypeORM + feature modules
+  main.ts              Bootstrap, global ValidationPipe
+  app.controller.ts    Health check
+  user/
+    user.module.ts     Registers the User repository
+    user.controller.ts REST routes for /user
+    user.service.ts    Repository access (find, save, update, delete)
+    entity/user.entity.ts
+    dto/user-update.dto.ts
+  auth/
+    auth.module.ts     Imports UserModule to reuse user lookups
+    auth.controller.ts POST /auth/login
+    dto/login.dto.ts
 ```
 
-## Running the app
+`AuthModule` imports `UserModule` and reuses `UserService.findByEmail` rather
+than duplicating persistence logic, keeping user access in a single place.
+Database credentials are read at startup through `@nestjs/config`, so the same
+image runs against any environment.
+
+## API reference
+
+Base URL: `http://localhost:3000`
+
+| Method | Path          | Description        | Body                        |
+| ------ | ------------- | ------------------ | --------------------------- |
+| GET    | `/`           | Health check       | –                           |
+| GET    | `/user`       | List all users     | –                           |
+| GET    | `/user/:id`   | Get a user by id   | –                           |
+| POST   | `/user`       | Create a user      | `{ name, email, password }` |
+| PATCH  | `/user/:id`   | Update a user      | `{ name, email, password }` |
+| DELETE | `/user/:id`   | Delete a user      | –                           |
+| POST   | `/auth/login` | Verify credentials | `{ email, password }`       |
+
+### Examples
+
+Create a user:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+curl -X POST http://localhost:3000/user \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Ada Lovelace","email":"ada@example.com","password":"s3cret"}'
 ```
 
-## Test
+Log in:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"ada@example.com","password":"s3cret"}'
 ```
 
-## Support
+Successful login returns the user without the password field:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```json
+{ "id": 1, "name": "Ada Lovelace", "email": "ada@example.com" }
+```
 
-## Stay in touch
+Bad credentials return `401 Unauthorized`:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```json
+{ "statusCode": 401, "message": "Invalid email or password", "error": "Unauthorized" }
+```
 
-## License
+## Getting started
 
-Nest is [MIT licensed](LICENSE).
+### Prerequisites
+
+- Node.js 18+
+- A running PostgreSQL instance
+
+### Setup
+
+```bash
+npm install
+cp .env.example .env   # then fill in the database values
+```
+
+Configure the connection in `.env`:
+
+```
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your-password
+DB_NAME=nestjsusermanagement
+```
+
+TypeORM runs with `synchronize` enabled, so the `user` table is created
+automatically on first boot. This is convenient for local development; use
+migrations before running against a production database.
+
+### Run
+
+```bash
+npm run start        # start
+npm run start:dev    # watch mode
+npm run start:prod   # run the compiled build
+```
+
+## Testing
+
+```bash
+npm test             # unit tests
+npm run test:e2e     # end-to-end tests (requires a database)
+npm run test:cov     # coverage
+```
+
+## Notes
+
+Passwords are currently compared as plain text, which keeps the example focused
+on the API surface and module structure. Hashing with bcrypt and issuing JWTs
+are the natural next steps for a production build.
