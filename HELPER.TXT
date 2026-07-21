@@ -1,7 +1,0 @@
-validation pipes:     Used to convert types between requests or add checks
-1: npm i --save class-validator class-transformer
-2: import this code in main.ts. 
-    app.useGlobalPipes(new ValidationPipe());
-
-3: add @isString() / @isEmail() decorators in DTOs.
-4: 
