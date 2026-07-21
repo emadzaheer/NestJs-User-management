@@ -1,25 +1,19 @@
-import { UserService } from './../user/user.service';
-import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { UserService } from '../user/user.service';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-              private userService: UserService) {}
-  
+  constructor(private readonly userService: UserService) {}
+
   @Post('/login')
-  async loginUser(@Body() logInDto: any){
-    const user = await  this.userService.findByEmail(logInDto.email);
-    if(user){
-      if(user.password === logInDto.password){
-        return user;
-      }
-      else{return "pass mismatch"}
+  async login(@Body() loginDto: LoginDto) {
+    const user = await this.userService.findByEmail(loginDto.email);
+    if (!user || user.password !== loginDto.password) {
+      throw new UnauthorizedException('Invalid email or password');
     }
-    
-    return logInDto;
+
+    const { password, ...safeUser } = user;
+    return safeUser;
   }
-
-  
-
 }
